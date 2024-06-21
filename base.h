@@ -11,7 +11,6 @@ using namespace std;
 
 namespace Engine
 {
-
     struct MSDFData
     {
         std::vector<msdf_atlas::GlyphGeometry> Glyphs;

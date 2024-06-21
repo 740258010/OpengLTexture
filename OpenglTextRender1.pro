@@ -66,6 +66,7 @@ SOURCES += \
     myfonts.cpp \
     myopenglwidget.cpp \
     opengltexture.cpp \
+    render2d.cpp \
     wdtextture.cpp
 
 HEADERS += \
@@ -218,6 +219,7 @@ HEADERS += \
     myfonts.h \
     myopenglwidget.h \
     opengltexture.h \
+    render2d.h \
     stb_image.h \
     wdtextture.h
 
