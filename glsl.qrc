@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>textFshader.fsh</file>
+        <file>textVert.vsh</file>
+    </qresource>
+</RCC>
