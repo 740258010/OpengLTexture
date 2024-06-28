@@ -4,7 +4,7 @@ namespace Engine
 {
 
     template<typename T, typename S, int N, msdf_atlas::GeneratorFunction<S, N> GenFunc>
-    static Ref<Texture2D> CreateAndCacheAtlas(const std::string& fontName, float fontSize, const std::vector<msdf_atlas::GlyphGeometry>& glyphs,
+    static Engine::TextureSpecification CreateAndCacheAtlas(const std::string& fontName, float fontSize, const std::vector<msdf_atlas::GlyphGeometry>& glyphs,
         const msdf_atlas::FontGeometry& fontGeometry, uint32_t width, uint32_t height)
     {
         msdf_atlas::GeneratorAttributes attributes;
@@ -17,21 +17,21 @@ namespace Engine
         generator.generate(glyphs.data(), (int)glyphs.size());
 
         msdfgen::BitmapConstRef<T, N> bitmap = (msdfgen::BitmapConstRef<T, N>)generator.atlasStorage();
+        const float *data = bitmap.pixels;
 
-        TextureSpecification spec;
+        Engine::TextureSpecification spec;
         spec.Width = bitmap.width;
-        spec.Height = bitmap.height;
-        spec.Format = ImageFormat::RGB8;
+        spec.Height = height;
+        spec.Format = Engine::ImageFormat::RGB8;
         spec.GenerateMips = false;
-
-        Ref<Texture2D> texture = Texture2D::Create(spec);
-        texture->SetData((void*)bitmap.pixels, bitmap.width * bitmap.height * 3);
-        return texture;
+        spec.pixels  = (void*)data;
+        return spec;
     }
 
     MyFonts::MyFonts(const char * fontfile)
         : m_Data(new MSDFData())
     {
+        m_AtlasTexture = new MTexture(QOpenGLTexture::Target2D);
         msdfgen::FreetypeHandle* ft = msdfgen::initializeFreetype();
 //        HZ_CORE_ASSERT(ft);
 
@@ -54,7 +54,9 @@ namespace Engine
         // From imgui_draw.cpp
         static const CharsetRange charsetRanges[] =
         {
-            { 0x0020, 0x00FF }
+//            { 0x0020, 0x00FF }
+
+            {0x20,0x7F            }
         };
 
         msdf_atlas::Charset charset;
@@ -111,9 +113,9 @@ namespace Engine
         }
 
 
-        m_AtlasTexture = CreateAndCacheAtlas<uint8_t, float, 3, msdf_atlas::msdfGenerator>("Test", (float)emSize, m_Data->Glyphs, m_Data->FontGeometry, width, height);
+       spec =  CreateAndCacheAtlas<float, float, 3, msdf_atlas::msdfGenerator>("Test", (float)emSize, m_Data->Glyphs, m_Data->FontGeometry, width, height);
 
-
+//       saveBmp(data,"test.bmp");
 #if 0
         msdfgen::Shape shape;
         if (msdfgen::loadGlyph(shape, font, 'C'))
@@ -133,9 +135,15 @@ namespace Engine
         msdfgen::deinitializeFreetype(ft);
     }
 
+    MTexture* MyFonts::GetAtlasTexture()
+    {
+        return m_AtlasTexture;
+    }
+
     MyFonts::~MyFonts()
     {
         delete m_Data;
+        delete m_AtlasTexture;
     }
 
 
@@ -143,9 +151,19 @@ namespace Engine
     {
         static Ref<MyFonts> DefaultFont;
         if (!DefaultFont)
-            DefaultFont = CreateRef<MyFonts>("assets/fonts/opensans/OpenSans-Regular.ttf");
+            DefaultFont = CreateRef<MyFonts>("../OpenglTextRender/fonts/arial.ttf");
 
         return DefaultFont;
+    }
+
+    const msdfgen::BitmapConstRef<msdfgen::byte,3> &MyFonts::getBitMap() const
+    {
+        return bitMap;
+    }
+
+    const TextureSpecification &MyFonts::getSpec() const
+    {
+        return spec;
     }
 
 }

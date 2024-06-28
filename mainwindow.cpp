@@ -30,6 +30,7 @@ int MainWindow::renderAText()
     if (FreetypeHandle *ft = initializeFreetype()) {
         QString dirStr = "../OpenglTextRender/fonts/arial.ttf";
 
+
         QByteArray ba = dirStr.toLatin1();
         char* font_file = ba.data();
 
@@ -38,7 +39,7 @@ int MainWindow::renderAText()
             if (loadGlyph(shape, font, 'D', FONT_SCALING_EM_NORMALIZED)) {
                 shape.normalize();
                 //                      max. angle
-                edgeColoringSimple(shape, 3.0);
+//                edgeColoringSimple(shape, 3.0);
                 //          output width, height
                 Bitmap<float, 3> msdf1(32, 32);
                 //                            scale, translation (in em's)
@@ -48,8 +49,8 @@ int MainWindow::renderAText()
 //                generateMTSDF(msdf, shape, t,config) ;
 //                generateSDF(msdf, shape, t,config);
 //                savePng(msdf, "output.png");
-                saveBmp(msdf1,"output.bmp");
-                saveTiff(msdf1,"output.tiff");
+                saveBmp(msdf1,"outputgg.bmp");
+//                saveTiff(msdf1,"output.tiff");
             }
             destroyFont(font);
         }

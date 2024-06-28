@@ -17,6 +17,25 @@ namespace Engine
         msdf_atlas::FontGeometry FontGeometry;
     };
 
+    enum class ImageFormat
+    {
+        None = 0,
+        R8,
+        RGB8,
+        RGBA8,
+        RGBA32F
+    };
+
+    struct TextureSpecification
+    {
+        uint32_t Width = 1;
+        uint32_t Height = 1;
+        ImageFormat Format = ImageFormat::RGBA8;
+        bool GenerateMips = true;
+        const void *pixels;
+//        const void* data;
+    };
+
     template<typename T>
     using Scope = std::unique_ptr<T>;
     template<typename T, typename ... Args>

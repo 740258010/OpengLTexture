@@ -1,19 +1,19 @@
-#include "wdtextture.h"
-#include "opengltexture.h"
-namespace Engine {
+//#include "wdtextture.h"
+//#include "QOpenGLTexture"
+//namespace Engine {
 
-    Ref<Texture2D> Texture2D::Create(const TextureSpecification& specification)
-    {
+//    Ref<Texture2D> Texture2D::Create(const TextureSpecification& specification)
+//    {
 
-        return  CreateRef<OpenglTexture>(specification);
+////        return  CreateRef<QOpenGLTexture>(specification);
 
-    }
+//    }
 
-    Ref<Texture2D> Texture2D::Create(const std::string& path)
-    {
+//    Ref<Texture2D> Texture2D::Create(const std::string& path)
+//    {
 
-        return CreateRef<OpenglTexture>(path);
+////        return CreateRef<QOpenGLTexture>(path);
 
-    }
+//    }
 
-}
+//}

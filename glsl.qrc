@@ -2,5 +2,7 @@
     <qresource prefix="/">
         <file>textFshader.fsh</file>
         <file>textVert.vsh</file>
+        <file>textfontshader.fsh</file>
+        <file>textfontvertex.vsh</file>
     </qresource>
 </RCC>

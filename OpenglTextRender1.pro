@@ -63,6 +63,7 @@ SOURCES += \
     msdfgen/ext/import-svg.cpp \
     msdfgen/ext/resolve-shape-geometry.cpp \
     msdfgen/ext/save-png.cpp \
+    mtexture.cpp \
     myfonts.cpp \
     myopenglwidget.cpp \
     opengltexture.cpp \
@@ -216,6 +217,7 @@ HEADERS += \
     msdfgen/msdfgen-ext.h \
     msdfgen/msdfgen.h \
     msdfgen/resource.h \
+    mtexture.h \
     myfonts.h \
     myopenglwidget.h \
     opengltexture.h \
@@ -646,4 +648,5 @@ DISTFILES += \
     lpng1643/tests/pngvalid-transform
 
 RESOURCES += \
-    glsl.qrc
+    glsl.qrc \
+    image.qrc

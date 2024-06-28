@@ -1,33 +1,37 @@
-#ifndef MYFONTS_H
-#define MYFONTS_H
 
 #include <stdlib.h>
 #include <filesystem>
 #include <base.h>
-#include <wdtextture.h>
+#include <mtexture.h>
+#include <qimage.h>
 
 using namespace Engine;
 namespace Engine
 {
-
     class MyFonts
     {
         public:
-            MyFonts();
             ~MyFonts();
 
             MyFonts(const char * fontfile);
 //            MyFonts(const std::filesystem::path& font);
 
             const MSDFData* GetMSDFData() const { return m_Data; }
-            Ref<Texture2D> GetAtlasTexture() const { return m_AtlasTexture; }
+            MTexture* GetAtlasTexture();
 
             static Ref<MyFonts> GetDefault();
 
-        private:
+            const msdfgen::BitmapConstRef<msdfgen::byte, 3> &getBitMap() const;
+
+            const TextureSpecification &getSpec() const;
+
+    private:
             MSDFData* m_Data;
-            Ref<Texture2D> m_AtlasTexture;
+            MTexture *m_AtlasTexture;
+            TextureSpecification spec;
+
+            msdfgen::BitmapConstRef<msdfgen::byte,3> bitMap;
     };
 }
 
-#endif // MYFONTS_H
+
