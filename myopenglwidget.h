@@ -66,7 +66,7 @@ private:
 
     GLuint texture1;
     QOpenGLTexture * texture2;
-    TextureSpecification* spec;
+    TextureSpecification spec;
 
 };
 

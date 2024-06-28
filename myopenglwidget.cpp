@@ -29,13 +29,13 @@ MyOpenglWidget::MyOpenglWidget()
     char* font_file = ba.data();
 //    generateAtlas(font_file);
 //    font = new MyFonts(font_file);
-    spec = new TextureSpecification;
-    generateAtlas1(font_file);
+//    spec = new TextureSpecification;
+//    spec = *generateAtlas1(font_file);
 }
 
 MyOpenglWidget::~MyOpenglWidget()
 {
-    delete spec;
+//    delete spec;
 }
 
 void MyOpenglWidget::initializeGL()
@@ -113,12 +113,12 @@ void MyOpenglWidget::initializeGL()
 //            float x = pixelByteToFloat(pixelFloatToByte(*p));
 
 
-//       QString dirStr = "../OpenglTextRender/fonts/arial.ttf";
-////        QString dirStr = "C:/Windows/Fonts/simfang.ttf";
-//       QByteArray ba = dirStr.toLatin1();
-//       char* font_file = ba.data();
+       QString dirStr = "../OpenglTextRender/fonts/arial.ttf";
+//        QString dirStr = "C:/Windows/Fonts/simfang.ttf";
+       QByteArray ba = dirStr.toLatin1();
+       char* font_file = ba.data();
 //       generateAtlas1(font_file);
-//       generateAtlas(font_file);
+       generateAtlas(font_file);
 //       saveBmp(*bitmap3,"tp.bmp");
 //        const float * datas2 = bitmap3->pixels;
 
@@ -162,17 +162,19 @@ void MyOpenglWidget::initializeGL()
 //       }
 //       stbi_image_free(data1);
 
-       glTexImage2D(
-                   GL_TEXTURE_2D,
-                   0,
-                   GL_RGB,
-                   spec->Width,
-                   spec->Height,
-                   0,
-                   GL_RGB,
-                   GL_FLOAT,
-                   spec->pixels
-                   );
+//       glTexImage2D(
+//                   GL_TEXTURE_2D,
+//                   0,
+//                   GL_RGB,
+//                   spec.Width,
+//                   spec.Height,
+//                   0,
+//                   GL_RGB,
+//                   GL_FLOAT,
+//                   spec.pixels
+//                   );
+
+//       glTextureSubImage2D(GL_TEXTURE_2D, 0, 0, 0, spec.Width, spec.Height, GL_RGB, GL_FLOAT,  spec.pixels);
 
 
 
@@ -297,6 +299,8 @@ msdfgen::BitmapConstRef<float, 3>* MyOpenglWidget::generateAtlas(const char *fon
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
+
+// glTextureSubImage2D(GL_TEXTURE_2D, 0, 0, 0, bitMap->width, bitMap->height, GL_RGB, GL_FLOAT, (void*) bitMap->pixels);
             glTexImage2D(
                 GL_TEXTURE_2D,
                 0,
@@ -305,8 +309,8 @@ msdfgen::BitmapConstRef<float, 3>* MyOpenglWidget::generateAtlas(const char *fon
                 bitMap->height,
                 0,
                 GL_RGB,
-                GL_FLOAT,
-                bitMap->pixels
+                GL_UNSIGNED_BYTE,
+                (void*)bitMap->pixels
             );
 
             msdfgen::destroyFont(font);
@@ -317,11 +321,11 @@ msdfgen::BitmapConstRef<float, 3>* MyOpenglWidget::generateAtlas(const char *fon
     return bitMap;
 }
 
-Engine::TextureSpecification MyOpenglWidget::generateAtlas1(const char *fontFilename)
+Engine::TextureSpecification* MyOpenglWidget::generateAtlas1(const char *fontFilename)
 {
-    Engine::TextureSpecification spec;
+    Engine::TextureSpecification *spec = new Engine::TextureSpecification;
     //    makeCurrent();
-    msdfgen::BitmapConstRef<float, 3>* bitMap = new msdfgen::BitmapConstRef<float, 3>;
+//    msdfgen::BitmapConstRef<float, 3>* bitMap = new msdfgen::BitmapConstRef<float, 3>;
     // Initialize instance of FreeType library
     if (msdfgen::FreetypeHandle *ft = msdfgen::initializeFreetype()) {
         // Load font file
@@ -384,11 +388,11 @@ Engine::TextureSpecification MyOpenglWidget::generateAtlas1(const char *fontFile
             const float *data = bitmap.pixels;
 
 
-            spec.Width = bitmap.width;
-            spec.Height = height;
-            spec.Format = Engine::ImageFormat::RGB8;
-            spec.GenerateMips = false;
-            spec.pixels  = (void*)data;
+            spec->Width = bitmap.width;
+            spec->Height = height;
+            spec->Format = Engine::ImageFormat::RGB8;
+            spec->GenerateMips = false;
+            spec->pixels  = (void*)data;
 
             qDebug()<<"gg"<<endl;
 
