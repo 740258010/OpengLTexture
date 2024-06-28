@@ -162,17 +162,17 @@ void MyOpenglWidget::initializeGL()
 //       }
 //       stbi_image_free(data1);
 
-//       glTexImage2D(
-//                   GL_TEXTURE_2D,
-//                   0,
-//                   GL_RGB,
-//                   spec->Width,
-//                   spec->Height,
-//                   0,
-//                   GL_RGB,
-//                   GL_FLOAT,
-//                   spec->pixels
-//                   );
+       glTexImage2D(
+                   GL_TEXTURE_2D,
+                   0,
+                   GL_RGB,
+                   spec->Width,
+                   spec->Height,
+                   0,
+                   GL_RGB,
+                   GL_FLOAT,
+                   spec->pixels
+                   );
 
 
 
@@ -317,12 +317,11 @@ msdfgen::BitmapConstRef<float, 3>* MyOpenglWidget::generateAtlas(const char *fon
     return bitMap;
 }
 
-Engine::TextureSpecification* MyOpenglWidget::generateAtlas1(const char *fontFilename)
+Engine::TextureSpecification MyOpenglWidget::generateAtlas1(const char *fontFilename)
 {
-
+    Engine::TextureSpecification spec;
     //    makeCurrent();
     msdfgen::BitmapConstRef<float, 3>* bitMap = new msdfgen::BitmapConstRef<float, 3>;
-    bool success = false;
     // Initialize instance of FreeType library
     if (msdfgen::FreetypeHandle *ft = msdfgen::initializeFreetype()) {
         // Load font file
@@ -385,11 +384,13 @@ Engine::TextureSpecification* MyOpenglWidget::generateAtlas1(const char *fontFil
             const float *data = bitmap.pixels;
 
 
-            spec->Width = bitmap.width;
-            spec->Height = height;
-            spec->Format = Engine::ImageFormat::RGB8;
-            spec->GenerateMips = false;
-            spec->pixels  = (void*)data;
+            spec.Width = bitmap.width;
+            spec.Height = height;
+            spec.Format = Engine::ImageFormat::RGB8;
+            spec.GenerateMips = false;
+            spec.pixels  = (void*)data;
+
+            qDebug()<<"gg"<<endl;
 
             msdfgen::destroyFont(font);
         }
